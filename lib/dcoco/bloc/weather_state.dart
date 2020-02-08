@@ -11,7 +11,7 @@ class InitialWeather extends WeatherState {}
 
 class WeatherError extends WeatherState{}
 class WeatherLoaded extends WeatherState{
-  final Weather weather;
+  final List<ListElement> weather;
 
   const WeatherLoaded({
     this.weather

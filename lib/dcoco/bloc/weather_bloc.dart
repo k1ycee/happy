@@ -25,7 +25,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     if (event is FetchWeather){
       yield InitialWeather();
       try{
-        final Weather weather = await weatherRepo.bring();
+        final List<ListElement> weather = await weatherRepo.bring();
         yield WeatherLoaded(weather: weather);
     }
     catch(_){
