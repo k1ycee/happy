@@ -46,7 +46,7 @@ class _SPFFState extends State<SPFF> {
           return Center(child: Text('No weather is available now'));
         }
         if (state is WeatherLoaded){
-          return Center(child: Text(state.weather.city.timezone.toString()),);
+          return Center(child: Text(state.weather.city.name.toString()));
         }
       },
      );
