@@ -1,39 +1,54 @@
+import 'package:birthday/dcoco/bloc/bloc.dart';
+import 'package:birthday/dcoco/model/weather_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-void main() => runApp(MyHomePage());
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+WeatherRepo _repo = WeatherRepo();
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+void main() {
+  runApp(MyHomePage(
+    weatherrepo: _repo,
+  ));}
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class MyHomePage extends StatelessWidget {
+  final weatherrepo;
+  MyHomePage({this.weatherrepo});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('Happy Birthday',style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w300, fontSize: 20),),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.white,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'I want to wish you ......',
-              ),
-            ],
-          ),
+      theme: ThemeData.dark(),
+      home: Scaffold(
+        body: BlocProvider(
+          create: (context) => WeatherBloc(weatherRepo: _repo)..add(FetchWeather()),
+          child: SPFF(),
         ),
       ),
     );
+  }
+}
+class SPFF extends StatefulWidget {
+  @override
+  _SPFFState createState() => _SPFFState();
+}
+
+class _SPFFState extends State<SPFF> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WeatherBloc,WeatherState>(
+      builder: (context,state){
+        if(state is InitialWeather){
+          return Center(child: SpinKitDoubleBounce(color: Colors.amber,size: 50,),);
+        }
+        if (state is WeatherError){
+          return Center(child: Text('No weather is available now'));
+        }
+        if (state is WeatherLoaded){
+          return Center(child: Text(state.weather.city.timezone.toString()),);
+        }
+      },
+     );
   }
 }
