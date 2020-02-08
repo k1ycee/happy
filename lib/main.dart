@@ -48,6 +48,7 @@ class _SPFFState extends State<SPFF> {
         if (state is WeatherLoaded){
           return Center(child: Text(state.weather.city.name.toString()));
         }
+        return null;
       },
      );
   }
